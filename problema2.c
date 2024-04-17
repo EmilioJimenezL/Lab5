@@ -37,6 +37,16 @@ bool search(int key) {
     return (hashTable[(index + i * step) % TABLE_SIZE] == key);
 }
 
+void delete(int key){
+    int index = h1(key);
+    int step = h2(key);
+    int i = 0;
+    while (hashTable[(index + i * step) % TABLE_SIZE] != key && hashTable[(index + i * step) % TABLE_SIZE] != 0 && i < TABLE_SIZE) {
+        i++;
+    }
+    hashTable[(index + i * step) % TABLE_SIZE] = 0;
+}
+
 void printHashTable() {
     printf("Tabla Hash: ");
     for (int i = 0; i < TABLE_SIZE; i++) {
@@ -50,32 +60,50 @@ int main() {
     for (int i = 0; i < TABLE_SIZE; i++) {
         hashTable[i] = 0;
     }
-    insert(4); insert(17); insert(30); insert(55); insert(90); insert(11); insert(56); insert(77);
-    printHashTable();
+    insert(4);
+    insert(17);
+    insert(30);
+    insert(55);
+    insert(90);
+    insert(11);
+    insert(56);
+    insert(77);
+    do {
+        printHashTable();
+        printf("1: Insertar un dato\n2: Buscar un dato\n3: Eliminar un dato\n0: Salir\n");
+        scanf("%d", &choice);
 
-    printf("1: Insertar dato\n2: Buscar dato\nIngrese su elección: ");
-    scanf("%d", &choice);
+        switch (choice) {
+            case 0:
+                printf("Saliendo...");
+                break;
+            case 1:
+                printf("Ingrese el dato a insertar:\n");
+                scanf("%d", &key);
+                insert(key);
+                printHashTable();
+                break;
+            case 2:
+                printf("Ingrese el dato a buscar:\n");
+                scanf("%d", &key);
+                if (search(key)) {
+                    printf("Dato %d encontrado.\n", key);
+                } else {
+                    printf("Dato %d no encontrado.\n", key);
+                }
+                break;
+            case 3:
+                printf("Ingrese el dato a eliminar:\n");
+                scanf("%d", &key);
+                delete(key);
+                printf("Dato eliminado\n");
+                break;
+            default:
+                printf("Opcion invalida.\n");
+                break;
+        }
+    } while (choice != 0);
 
-    switch (choice) {
-        case 1:
-            printf("Ingrese el dato a insertar: ");
-            scanf("%d", &key);
-            insert(key);
-            printHashTable();
-            break;
-        case 2:
-            printf("Ingrese el dato a buscar: ");
-            scanf("%d", &key);
-            if (search(key)) {
-                printf("Dato %d encontrado.\n", key);
-            } else {
-                printf("Dato %d no encontrado.\n", key);
-            }
-            break;
-        default:
-            printf("Opción inválida.\n");
-            break;
-    }
 
     return 0;
 }
